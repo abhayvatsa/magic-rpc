@@ -1,0 +1,22 @@
+{
+  "name": "example",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "magic-rpc": "^1.2.9",
+    "cross-fetch": "^3.1.4",
+    "next": "10.2.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "tslib": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.5",
+    "typescript": "^4.2.4"
+  }
+}
