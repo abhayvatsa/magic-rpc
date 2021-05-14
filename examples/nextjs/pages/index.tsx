@@ -8,8 +8,8 @@ export default function Home() {
   const [data, setResult] = useState<number>()
   const [error, setError] = useState<string>()
 
-  const num1 = useRef()
-  const num2 = useRef()
+  const num1 = useRef<HTMLInputElement>()
+  const num2 = useRef<HTMLInputElement>()
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -20,10 +20,10 @@ export default function Home() {
     const y = parseInt(num2.current.value)
 
     const response = await client.divide(x, y)
-    
+
     // We use type narrowing here
     if (response.ok) {
-      const quotient = response.val // Check intellisense: `quotient` is a 'number'
+      const quotient = response.val // Check IntelliSense: `quotient` is a 'number'
       setResult(quotient)
     } else {
       console.error(response.stack)
