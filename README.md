@@ -64,10 +64,10 @@ import { createClient } from 'magic-rpc'
 import { methods } from './methods'
 
 // Create RPC client
-const client = createClient<typeof methods>(`http://localhost:8080/rpc`)
+const { divide } = createClient<typeof methods>(`http://localhost:8080/rpc`)
 
 // Invoke method on RPC client
-const result = await client.divide(10, 0)
+const result = await divide(10, 0)
 
 // NOTE: TypeScript enforces error checking through type narrowing.
 if (result.ok) {
