@@ -29,7 +29,7 @@
     "rpc"
   ],
   "author": "Abhay Vatsa",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/abhayvatsa/magic-rpc/issues"
   },
