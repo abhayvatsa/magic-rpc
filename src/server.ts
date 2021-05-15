@@ -15,11 +15,6 @@ export type Methods = {
 }
 export { Server }
 
-// TODO: Make this configurable. Ideally, default to `false`, and make
-// users have to go through a name like this to set it to `true`, so
-// that the security ramifications are explicit!
-const unsafelyLeakErrors = true
-
 async function getResult(action: <T = unknown, R = unknown>(args?: T) => R) {
   try {
     const result = await Promise.resolve(stacktrace.barrier(action))
@@ -30,13 +25,14 @@ async function getResult(action: <T = unknown, R = unknown>(args?: T) => R) {
 
     return Ok(result)
   } catch (error) {
-    console.error(`unhandled exception in server function: ${error}`)
+    const stack = stacktrace.get(error)
+    console.error(`unhandled exception in method: ${error} ${stack}`)
 
-    if (unsafelyLeakErrors) {
-      return Err(error, stacktrace.get(error))
+    if (process.env.NODE_ENV === 'production') {
+      return Err('internal server error', '')
     }
 
-    return Err('internal server error', '')
+    return Err(error, stack)
   }
 }
 
