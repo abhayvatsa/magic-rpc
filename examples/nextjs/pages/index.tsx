@@ -21,9 +21,10 @@ export default function Home() {
 
     const response = await client.divide(x, y)
 
-    // We use type narrowing here
     if (response.ok) {
-      const quotient = response.val // Check IntelliSense: `quotient` is a 'number'
+      // type narrowing guarantees `response.val` is of type `number`
+      // i.e. compiler would error if `response.val` was a `string`
+      const quotient: number = response.val
       setResult(quotient)
     } else {
       console.error(response.stack)
