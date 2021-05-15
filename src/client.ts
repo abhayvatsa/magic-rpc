@@ -5,7 +5,7 @@ import { Request } from './server'
 
 export type Fetch = typeof crossFetch
 
-class RPCError {
+export class RPCError {
   message: string
   constructor(message: string) {
     this.message = message
