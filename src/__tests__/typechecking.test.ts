@@ -1,3 +1,4 @@
+import { RPCError } from '../client'
 import { client } from './app'
 
 describe('typechecking', () => {
@@ -9,6 +10,8 @@ describe('typechecking', () => {
       const quotient: number = result.val // tsc throws error if type narrowing isn't working
 
       expect(typeof quotient === 'number').toBeTruthy() // Runtime check
+    } else {
+      const err: string | RPCError = result.val
     }
   })
 })
