@@ -1,4 +1,5 @@
-import { RPCError } from '../client'
+import { assert, IsExact } from 'conditional-type-checks'
+import { RPCError } from '../'
 import { client } from './app'
 
 describe('typechecking', () => {
@@ -7,11 +8,9 @@ describe('typechecking', () => {
     const result = await divide(10, 0)
 
     if (result.ok) {
-      const quotient: number = result.val // tsc throws error if type narrowing isn't working
-
-      expect(typeof quotient === 'number').toBeTruthy() // Runtime check
+      assert<IsExact<typeof result.val, number>>(true)
     } else {
-      const err: string | RPCError = result.val
+      assert<IsExact<typeof result.val, 'Divided by zero' | RPCError>>(true)
     }
   })
 })
