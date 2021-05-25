@@ -38,7 +38,7 @@ Note: Our function's return type conforms with
 
 ```typescript
 // methods.ts
-import { Ok, Err, Result } from 'magic-rpc'
+import { Ok, Err } from 'magic-rpc'
 
 // Define methods for your server logic
 export const methods = {
@@ -46,9 +46,9 @@ export const methods = {
     _req: Request,
     x: number,
     y: number
-  ): Result<number, 'Divided by zero'> {
+  )> {
     if (y === 0) {
-      return Err('Divided by zero')
+      return Err('Divided by zero' as const)
     } else {
       return Ok(x / y)
     }
@@ -69,11 +69,10 @@ const { divide } = createClient<typeof methods>(`http://localhost:8080/rpc`)
 // Invoke method on RPC client
 const result = await divide(10, 0)
 
-// NOTE: TypeScript enforces error checking through type narrowing.
 if (result.ok) {
-  const quotient = val // compiler knows `val` is of type 'number'
+  const quotient: number = result.val // type narrowing guarantees `number`
 } else {
-  const err = val // compiler knows `val` is of type 'string'
+  const err = result.val
 }
 ```
 
