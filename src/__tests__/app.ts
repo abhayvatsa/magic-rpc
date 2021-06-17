@@ -1,21 +1,17 @@
 import { createClient, createServer, Server } from '../'
 import { methods } from './methods'
 
-// configuration parameters
-const port = 9999
-export const rpcUrl = `http://localhost:${port}/rpc`
-
-export const server = (function () {
-  let server: Server
+export const createRpc = async function () {
+  const server = await createServer(methods)
+  const rpcUrl = `http://localhost:${server.address().port}/rpc`
 
   return {
-    async setup() {
-      server = await createServer(methods, port)
-    },
+    rpcUrl,
+
     teardown() {
       server.close()
     },
-  }
-})()
 
-export const client = createClient<typeof methods>(rpcUrl)
+    client: createClient<typeof methods>(rpcUrl),
+  }
+}
