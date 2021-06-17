@@ -98,3 +98,4 @@ app.listen(8080)
 - https://github.com/shekohex/jsonrpc-ts
 - https://github.com/aiden/rpc_ts
 - https://github.com/strongloop/loopback-next
+- https://github.com/vriad/trpc
