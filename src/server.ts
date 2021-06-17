@@ -1,8 +1,9 @@
 import { OkImpl, ErrImpl, Ok, Err } from './result'
-import { Server } from 'http'
+import { Server as ServerBase } from 'http'
 import { Request, Response } from './types'
 import invariant from 'tiny-invariant'
 import stacktrace from './stacktrace'
+import { AddressInfo } from 'net'
 
 export type Method = (req: Request, ...args: any[]) => any
 export { Request }
@@ -93,9 +94,12 @@ export const createMiddleware = function (methods: Methods) {
 /**
  * The createServer returns an Express server with RPC middleware on /`path`
  */
+interface Server extends Omit<ServerBase, 'address'> {
+  address: () => AddressInfo
+}
 export async function createServer(
   methods: Methods,
-  port = 3000,
+  port = 0,
   path = '/rpc'
 ): Promise<Server> {
   const { default: express } = await import('express')
@@ -106,6 +110,6 @@ export async function createServer(
   app.use(path, createMiddleware(methods))
 
   return new Promise((resolve) => {
-    const server: Server = app.listen(port, () => resolve(server))
+    const server = app.listen(port, () => resolve(server)) as Server
   })
 }
