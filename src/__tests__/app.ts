@@ -1,4 +1,4 @@
-import { createClient, createServer, Server } from '../'
+import { createClient, createServer } from '../'
 import { methods } from './methods'
 
 export const createRpc = async function () {
