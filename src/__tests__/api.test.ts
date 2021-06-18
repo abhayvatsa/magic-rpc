@@ -1,7 +1,7 @@
 import { createRpc } from './app'
 
 describe('API', () => {
-  it('Test a synchronous method returning non-Result', async () => {
+  it.concurrent('Test a synchronous method returning non-Result', async () => {
     const rpc = await createRpc()
     const { val, ok, stack } = await rpc.client.hello('world')
 
@@ -12,16 +12,19 @@ describe('API', () => {
     rpc.teardown()
   })
 
-  it('Test an asynchronous method returning non-Result', async () => {
-    const rpc = await createRpc()
-    const { val } = await rpc.client.goodbye('abhay')
+  it.concurrent(
+    'Test an asynchronous method returning non-Result',
+    async () => {
+      const rpc = await createRpc()
+      const { val } = await rpc.client.goodbye('abhay')
 
-    expect(val).toEqual('Goodbye abhay!')
+      expect(val).toEqual('Goodbye abhay!')
 
-    rpc.teardown()
-  })
+      rpc.teardown()
+    }
+  )
 
-  it('Test an asynchronous method return OkImpl', async () => {
+  it.concurrent('Test an asynchronous method return OkImpl', async () => {
     const rpc = await createRpc()
     const { ok, val } = await rpc.client.getUnixTime()
 
@@ -30,19 +33,22 @@ describe('API', () => {
     rpc.teardown()
   })
 
-  it('Test an asynchronous method returning OkImpl/ErrImpl', async () => {
-    const rpc = await createRpc()
-    const result = await rpc.client.getPeople()
+  it.concurrent(
+    'Test an asynchronous method returning OkImpl/ErrImpl',
+    async () => {
+      const rpc = await createRpc()
+      const result = await rpc.client.getPeople()
 
-    expect(
-      (result.err && result.val === 'ahh!') ||
-        (result.ok && result.val.length === 3)
-    ).toEqual(true)
+      expect(
+        (result.err && result.val === 'ahh!') ||
+          (result.ok && result.val.length === 3)
+      ).toEqual(true)
 
-    rpc.teardown()
-  })
+      rpc.teardown()
+    }
+  )
 
-  it('Test an asynchronous method returning Result', async () => {
+  it.concurrent('Test an asynchronous method returning Result', async () => {
     const rpc = await createRpc()
     const { ok, val, stack } = await rpc.client.divide(10, 0)
 
