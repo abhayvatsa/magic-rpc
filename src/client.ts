@@ -17,8 +17,13 @@ type UnwrapResultOk<T> = T extends Result<unknown, unknown>
   ? ResultOkType<T>
   : T
 
+// NOTE: Don't include `Request` for client-side parameters
+type ExcludeRequest<T> = T extends (_: Request, ...args: infer A) => infer R
+  ? (...args: A) => R
+  : T
+
 export type Client<T> = {
-  [K in keyof T]: T[K] extends (_: Request, ...args: infer A) => infer P
+  [K in keyof T]: ExcludeRequest<T[K]> extends (...args: infer A) => infer P
     ? (
         ...args: A
       ) => Promise<
@@ -27,7 +32,7 @@ export type Client<T> = {
           ResultErrType<UnwrapPromise<P>> | RPCError
         >
       >
-    : never // NOTE: We _expect_ the first parameter to be a request.
+    : never
 }
 
 /**
