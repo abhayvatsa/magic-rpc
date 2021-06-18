@@ -36,7 +36,8 @@ Invoking an RPC method from your client _looks_ like calling a function
 defined on your server.
 
 ```typescript
-const result = divide(10, 0)
+// Note: `divide` is a remote procedure call and goes over a network boundary
+const result = divide(10, 0) 
 ```
 
 Server methods functions have a return type of `Result<T, E>` or
