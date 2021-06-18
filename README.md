@@ -106,7 +106,7 @@ app.listen(8080)
 
 - Typescript currently has a
   [bug](https://github.com/microsoft/TypeScript/issues/10564), making type
-  narrowing only work when `strictNullChecks` is turned on._
+  narrowing only work when `strictNullChecks` is turned on.
 
 ## Alternatives
 
