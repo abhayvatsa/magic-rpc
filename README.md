@@ -1,7 +1,6 @@
 # magic-rpc [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/abhayvatsa/magic-rpc/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/magic-rpc.svg?style=flat)](https://www.npmjs.com/package/magic-rpc)
 
-A strongly-typed RPC framework with compile-time error checking for
-client-server applications written in TypeScript.
+A strongly-typed RPC framework with compile-time error checking.
 
 ## Motivation
 
@@ -32,12 +31,12 @@ _Note: Some features are in development_
 
 ## Usage
 
-Invoking an RPC method from your client _looks_ like calling a function
-defined on your server.
+Invoking an RPC method from your client _looks_ like calling a function defined
+on your server.
 
 ```typescript
 // Note: `divide` is a remote procedure call and goes over a network boundary
-const result = divide(10, 0) 
+const result = divide(10, 0)
 ```
 
 Server methods functions have a return type of `Result<T, E>` or
