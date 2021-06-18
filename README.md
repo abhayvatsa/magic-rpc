@@ -101,7 +101,7 @@ app.post('/rpc', createMiddleware(methods))
 app.listen(8080)
 ```
 
-## Gotchas
+## Caveats
 
 - _Note: Typescript currently has a
   [bug](https://github.com/microsoft/TypeScript/issues/10564), making this type
