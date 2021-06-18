@@ -3,7 +3,7 @@ import { RPCError } from '../'
 import { createRpc } from './app'
 
 describe('typechecking', () => {
-  it('type narrowing works correctly', async () => {
+  it.concurrent('type narrowing works correctly', async () => {
     const rpc = await createRpc()
     const result = await rpc.client.divide(10, 0)
 

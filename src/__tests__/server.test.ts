@@ -2,7 +2,7 @@ import { createRpc } from './app'
 import fetch from 'cross-fetch'
 
 describe('server error handling', () => {
-  it('Test a method that does not exist', async () => {
+  it.concurrent('Test a method that does not exist', async () => {
     const rpc = await createRpc()
     // @ts-expect-error: We are destructured a method that does not exist on client
     const { DOES_NOT_EXIST } = rpc.client
@@ -15,7 +15,7 @@ describe('server error handling', () => {
     rpc.teardown()
   })
 
-  it('Try a method other than HTTP POST', async () => {
+  it.concurrent('Try a method other than HTTP POST', async () => {
     const rpc = await createRpc()
     const { result } = await fetch(rpc.rpcUrl, {
       method: 'DELETE',
@@ -30,7 +30,7 @@ describe('server error handling', () => {
     rpc.teardown()
   })
 
-  it('Try a method prefixed with _', async () => {
+  it.concurrent('Try a method prefixed with _', async () => {
     const rpc = await createRpc()
     // This is usually a private method to the server
     const result = await rpc.client._superSecretMethod()
