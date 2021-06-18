@@ -104,8 +104,8 @@ app.listen(8080)
 
 ## Caveats
 
-- _Note: Typescript currently has a
-  [bug](https://github.com/microsoft/TypeScript/issues/10564), making this type
+- Typescript currently has a
+  [bug](https://github.com/microsoft/TypeScript/issues/10564), making type
   narrowing only work when `strictNullChecks` is turned on._
 
 ## Alternatives
