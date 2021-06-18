@@ -1,7 +1,7 @@
 # magic-rpc [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/abhayvatsa/magic-rpc/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/magic-rpc.svg?style=flat)](https://www.npmjs.com/package/magic-rpc)
 
-A strongly-typed RPC framework for client-server applications written in
-TypeScript.
+A strongly-typed RPC framework with compile-time error checking for
+client-server applications written in TypeScript.
 
 ## Motivation
 
@@ -23,6 +23,8 @@ your error type.
 
 ## Features
 
+_Note: Some features are in development_
+
 - [x] RPC Client that can propagate errors, data types, stack traces over a
       network boundary
 - [ ] Stack traces and errors are anonymized/hidden in production
@@ -30,20 +32,25 @@ your error type.
 
 ## Usage
 
-We define our server methods as functions with a return type of `Result<T, E>`.
-This is equivalent to `Ok<T> | Err<E>`.
+Invoking an RPC method on your client _looks_ just like calling the function
+defined on your server.
 
-Note: Our function's return type conforms with
-`Ok<number> | Err<'Divided by zero'>`.
+```typescript
+const result = divide(10, 0)
+```
+
+Server methods functions have a return type of `Result<T, E>` or
+`Ok<T> | Err<E>`). Below, the return type of `divide` has a return type of
+`Result<number, 'Divided by zero'>` or `Ok<number> | Err<'Divided by zero'>`
 
 ```typescript
 // methods.ts
 import { Ok, Err } from 'magic-rpc'
 
-// Define methods for your server logic
+// These are methods the server will expose
 export const methods = {
   divide(
-    _req: Request,
+    _req,
     x: number,
     y: number
   )> {
@@ -67,10 +74,11 @@ import { methods } from './methods'
 const { divide } = createClient<typeof methods>(`http://localhost:8080/rpc`)
 
 // Invoke method on RPC client
-const result = await divide(10, 0)
+const result = await divide(10, 0) // result: Result<number, 'Divided by zero'>
 
+// TS now forces you to check whether you have a valid result at compile time.
 if (result.ok) {
-  const quotient: number = result.val // type narrowing guarantees `number`
+  const quotient = result.val //  type narrowing guarantees `quotient` is a `number`
 } else {
   const err = result.val
 }
@@ -93,9 +101,15 @@ app.post('/rpc', createMiddleware(methods))
 app.listen(8080)
 ```
 
+## Gotchas
+
+- _Note: Typescript currently has a
+  [bug](https://github.com/microsoft/TypeScript/issues/10564), making this type
+  narrowing only work when `strictNullChecks` is turned on._
+
 ## Alternatives
 
-- https://github.com/shekohex/jsonrpc-ts
-- https://github.com/aiden/rpc_ts
-- https://github.com/strongloop/loopback-next
-- https://github.com/vriad/trpc
+- [loopback-next](https://github.com/strongloop/loopback-next)
+- [trpc](https://github.com/vriad/trpc)
+- [jsonrpc-ts](https://github.com/shekohex/jsonrpc-ts)
+- [rpc_ts](https://github.com/aiden/rpc_ts)
