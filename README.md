@@ -32,7 +32,7 @@ _Note: Some features are in development_
 
 ## Usage
 
-Invoking an RPC method on your client _looks_ just like calling the function
+Invoking an RPC method from your client _looks_ like calling a function
 defined on your server.
 
 ```typescript
