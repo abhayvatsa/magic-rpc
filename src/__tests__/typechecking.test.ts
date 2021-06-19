@@ -1,5 +1,5 @@
 import { assert, IsExact } from 'conditional-type-checks'
-import { RPCError } from '../'
+import { RpcError } from '../'
 import { createRpc } from './app'
 
 describe('typechecking', () => {
@@ -10,7 +10,7 @@ describe('typechecking', () => {
     if (result.ok) {
       assert<IsExact<typeof result.val, number>>(true)
     } else {
-      assert<IsExact<typeof result.val, 'Divided by zero' | RPCError>>(true)
+      assert<IsExact<typeof result.val, 'Divided by zero' | RpcError>>(true)
     }
 
     rpc.teardown()

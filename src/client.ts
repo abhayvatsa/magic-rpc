@@ -5,7 +5,7 @@ import { Request } from './server'
 
 export type Fetch = typeof crossFetch
 
-export class RPCError {
+export class RpcError {
   message: string
   constructor(message: string) {
     this.message = message
@@ -29,7 +29,7 @@ export type Client<T> = {
       ) => Promise<
         Result<
           UnwrapResultOk<UnwrapPromise<P>>,
-          ResultErrType<UnwrapPromise<P>> | RPCError
+          ResultErrType<UnwrapPromise<P>> | RpcError
         >
       >
     : never
@@ -79,7 +79,7 @@ export function createClient<T>(url: string, fetch = crossFetch): Client<T> {
 
             return Ok(val)
           } catch (err) {
-            return Err(new RPCError('Unexpected request error!'))
+            return Err(new RpcError('Unexpected request error!'))
           }
         }
       },
