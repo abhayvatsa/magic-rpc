@@ -68,11 +68,13 @@ export function createClient<T>(url: string, fetch = crossFetch): Client<T> {
             invariant(json.id === id, 'invalid response id')
 
             const {
-              result: { err, val, stack },
+              result: { err, val, _stack },
             } = json
 
             if (err) {
-              return Err(val, val + '\n' + stack)
+              const e = Err(val)
+              ;(e as any)._stack = _stack
+              return e
             }
 
             return Ok(val)
