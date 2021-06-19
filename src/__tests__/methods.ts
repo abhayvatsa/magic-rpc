@@ -28,13 +28,9 @@ export const methods = {
     return Math.random() > 0.5 ? Ok(people) : Err('ahh!')
   },
   // Ret: asynchronous return value + Result<T,E> return type
-  divide(
-    _req: Request,
-    dividend: number,
-    divisor: number
-  ): Result<number, 'Divided by zero'> {
+  divide(_req: Request, dividend: number, divisor: number) {
     if (divisor === 0) {
-      return Err('Divided by zero')
+      return Err('Divided by zero' as const)
     }
     return Ok(dividend / divisor)
   },
