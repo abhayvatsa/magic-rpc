@@ -5,10 +5,9 @@ export type { ResultOkType, ResultErrType } from 'ts-results'
 
 export class ErrImpl<E> extends ErrImplBase<E> {
   readonly ok = false
-  stack: string
   constructor(val: E, stack: string) {
     super(val)
-    this.stack = stack
+    ;(this as any)._stack = stack
   }
 }
 
@@ -19,7 +18,6 @@ export function Err<E>(val: E, stack = stacktrace.get()): Err<E> {
 
 export class OkImpl<T> extends OkImplBase<T> {
   readonly ok = true
-  stack = ''
 }
 
 export declare type Ok<T> = OkImpl<T>

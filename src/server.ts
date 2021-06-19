@@ -1,4 +1,4 @@
-import { OkImpl, ErrImpl, Ok, Err } from './result'
+import { Ok, Err, OkImpl, ErrImpl } from './result'
 import { Server as ServerBase } from 'http'
 import { Request, Response } from './types'
 import invariant from 'tiny-invariant'
@@ -29,11 +29,7 @@ async function getResult(action: <T = unknown, R = unknown>(args?: T) => R) {
     const stack = stacktrace.get(error)
     console.error(`unhandled exception in method: ${error} ${stack}`)
 
-    if (process.env.NODE_ENV === 'production') {
-      return Err('internal server error', '')
-    }
-
-    return Err(error, stack)
+    return Err('interval server error')
   }
 }
 
@@ -64,6 +60,10 @@ export const createMiddleware = function (methods: Methods) {
     const method = methods[req.body.method]
 
     const result = await getResult(method.bind(null, req, ...req.body.params))
+
+    if (process.env.NODE_ENV === 'production') {
+      ;(result as any)._stack = ''
+    }
 
     res.end(
       JSON.stringify({
