@@ -12,7 +12,7 @@
     "test:debug": "npm run test -- --runInBand",
     "build": "tsc --noEmitOnError",
     "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx}\"",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint . --ext .ts && tsc --noEmit",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
