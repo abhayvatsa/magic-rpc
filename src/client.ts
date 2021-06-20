@@ -18,14 +18,14 @@ type UnwrapResultOk<T> = T extends Result<unknown, unknown>
   : T;
 
 // NOTE: Don't include `Request` for client-side parameters
-type ExcludeRequest<T> = T extends (_: Request, ...args: infer A) => infer R
-  ? (...args: A) => R
+declare type ExcludeRequest<T> = T extends [_: Request, ...args: infer A]
+  ? A
   : T;
 
 export type Client<T> = {
-  [K in keyof T]: ExcludeRequest<T[K]> extends (...args: infer A) => infer P
+  [K in keyof T]: T[K] extends (...args: infer A) => infer P
     ? (
-        ...args: A
+        ...args: ExcludeRequest<A>
       ) => Promise<
         Result<
           UnwrapResultOk<UnwrapPromise<P>>,
