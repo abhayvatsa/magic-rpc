@@ -45,6 +45,8 @@ export function createClient<T>(url: string, fetch = crossFetch): Client<T> {
     {},
     {
       get(_, method: string) {
+        if (method === 'then') return null; // Proxy is not thennable (enable returning from async functions)
+
         return async (...params: unknown[]) => {
           const id = (idSeed++).toString();
 
