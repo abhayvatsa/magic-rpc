@@ -1,7 +1,10 @@
 import { wrapInClient, Client } from './app';
 
-describe('typechecking', () => {
-  it.concurrent(
+/* Note: this test is in a seperate file because it modifies a global variable
+ * Test runner must guarantee this test runs in isolated process.
+ */
+describe('stack trace in production', () => {
+  it(
     "Ensure we don't leak stack traces in production",
     wrapInClient(async function ({ divide }: Client) {
       const temp = process.env.NODE_ENV;
