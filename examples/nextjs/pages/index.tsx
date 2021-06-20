@@ -1,34 +1,34 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import { FormEvent, useState } from 'react'
-import { useRef } from 'react'
-import { client } from '../engine'
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import { FormEvent, useState } from 'react';
+import { useRef } from 'react';
+import { client } from '../engine';
 
 export default function Home() {
-  const [data, setResult] = useState<number>()
-  const [error, setError] = useState<string>()
+  const [data, setResult] = useState<number>();
+  const [error, setError] = useState<string>();
 
-  const num1 = useRef<HTMLInputElement>()
-  const num2 = useRef<HTMLInputElement>()
+  const num1 = useRef<HTMLInputElement>();
+  const num2 = useRef<HTMLInputElement>();
 
   async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    setError(undefined)
-    setResult(undefined)
+    e.preventDefault();
+    setError(undefined);
+    setResult(undefined);
 
-    const x = parseInt(num1.current.value)
-    const y = parseInt(num2.current.value)
+    const x = parseInt(num1.current.value);
+    const y = parseInt(num2.current.value);
 
-    const response = await client.divide(x, y)
+    const response = await client.divide(x, y);
 
     if (response.ok) {
       // type narrowing guarantees `response.val` is of type `number`
       // i.e. compiler would error if `response.val` was a `string`
-      const quotient: number = response.val
-      setResult(quotient)
+      const quotient: number = response.val;
+      setResult(quotient);
     } else {
-      console.error(response.stack)
-      setError(response.val)
+      console.error(response.stack);
+      setError(response.val);
     }
   }
 
@@ -57,5 +57,5 @@ export default function Home() {
         </div>
       </main>
     </div>
-  )
+  );
 }

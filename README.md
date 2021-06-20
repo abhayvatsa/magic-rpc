@@ -36,7 +36,7 @@ on your server.
 
 ```typescript
 // Note: `divide` is a remote procedure call and goes over a network boundary
-const result = divide(10, 0)
+const result = divide(10, 0);
 ```
 
 Server methods functions have a return type of `Result<T, E>` or
@@ -67,20 +67,20 @@ Create a client that is aware of the return types of your methods.
 
 ```typescript
 // client.ts
-import { createClient } from 'magic-rpc'
-import { methods } from './methods'
+import { createClient } from 'magic-rpc';
+import { methods } from './methods';
 
 // Create RPC client
-const { divide } = createClient<typeof methods>(`http://localhost:8080/rpc`)
+const { divide } = createClient<typeof methods>(`http://localhost:8080/rpc`);
 
 // Invoke method on RPC client
-const result = await divide(10, 0) // result: Result<number, 'Divided by zero'>
+const result = await divide(10, 0); // result: Result<number, 'Divided by zero'>
 
 // TS now forces you to check whether you have a valid result at compile time.
 if (result.ok) {
-  const quotient = result.val //  type narrowing guarantees `quotient` is a `number`
+  const quotient = result.val; //  type narrowing guarantees `quotient` is a `number`
 } else {
-  const err = result.val
+  const err = result.val;
 }
 ```
 
@@ -88,17 +88,17 @@ Finally, this is what configuring your server looks like.
 
 ```typescript
 // server.ts
-import { createMiddleware } from 'magic-rpc'
-import express from 'express'
-import { methods } from './methods'
+import { createMiddleware } from 'magic-rpc';
+import express from 'express';
+import { methods } from './methods';
 
 // Configure express server
-const app = express()
-app.use(express.json())
-app.post('/rpc', createMiddleware(methods))
+const app = express();
+app.use(express.json());
+app.post('/rpc', createMiddleware(methods));
 
 // Start server
-app.listen(8080)
+app.listen(8080);
 ```
 
 ## Caveats

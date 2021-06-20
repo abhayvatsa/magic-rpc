@@ -4,11 +4,11 @@ module.exports = {
       config.node = {
         fs: 'empty',
         net: 'empty',
-      }
+      };
     }
-    return config
+    return config;
   },
   typescript: {
     ignoreBuildErrors: true,
   },
-}
+};
