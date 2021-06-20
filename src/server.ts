@@ -91,6 +91,8 @@ export const createMiddleware = function (methods: Methods) {
   };
 };
 
+export type Middleware = ReturnType<typeof createMiddleware>;
+
 /**
  * The createServer returns an Express server with RPC middleware on /`path`
  */
