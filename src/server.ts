@@ -6,7 +6,7 @@ import stacktrace from './stacktrace';
 import { AddressInfo } from 'net';
 
 export type Method = (req: Request, ...args: any[]) => any;
-export { Request };
+export type { Request };
 
 /**
  * The type for server methods.
