@@ -64,8 +64,10 @@ export const createMiddleware = function (methods: Methods) {
     const method = methods[req.body.method];
     const args = [req, ...req.body.params];
     invariant(
-      Array.isArray(req.body.params),
-      `Expected ${method.length - 1} arguments, received ${args.length}`
+      method.length === args.length,
+      `Expected ${method.length - 1} arguments, received ${
+        req.body.params.length
+      }`
     );
 
     const result = await getResult(method.bind(null, ...args));

@@ -12,6 +12,19 @@ describe('API', () => {
   );
 
   it.concurrent(
+    'Test incorrect number of arguments',
+    wrapInClient(async ({ hello }: Client) => {
+      // @ts-expect-error Purposely calling with incorrect # of arguments
+      const result = await hello();
+
+      expect(result.ok).toEqual(false);
+      expect(result.val).toEqual(
+        'Invariant failed: Expected 1 arguments, received 0'
+      );
+    })
+  );
+
+  it.concurrent(
     'Test an asynchronous method returning non-Result',
     wrapInClient(async ({ goodbye }: Client) => {
       const { val } = await goodbye('abhay');
