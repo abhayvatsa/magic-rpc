@@ -38,6 +38,10 @@ async function getResult(action: <T = unknown, R = unknown>(args?: T) => R) {
  */
 export const createMiddleware = function (methods: Methods) {
   async function handleRequest(req: Request, res: Response): Promise<void> {
+    invariant(
+      typeof req.body === 'object',
+      'req.body was not an object, is JSON parsing enabled?'
+    );
     invariant(!Array.isArray(req.body), 'Do not support batched request'); // TODO: support batch
     invariant(req.body.jsonrpc === '2.0', 'jsonrpc version is not 2.0');
     invariant(
@@ -76,10 +80,6 @@ export const createMiddleware = function (methods: Methods) {
 
   return async (req: Request, res: Response) => {
     try {
-      invariant(
-        typeof req.body === 'object',
-        'req.body was not an object, is JSON parsing enabled?'
-      );
       await handleRequest(req, res);
     } catch (e) {
       res.json({
