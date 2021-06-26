@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch';
 import { createClient, createServer } from '../';
 import { methods } from './methods';
 
@@ -13,7 +14,7 @@ export const createRpc = async function () {
 
     teardown: () => server.close(),
 
-    client: createClient<typeof methods>(rpcUrl),
+    client: createClient<typeof methods>(rpcUrl, fetch),
   };
 };
 

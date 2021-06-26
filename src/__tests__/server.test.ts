@@ -1,5 +1,5 @@
-import { createRpc, wrapInClient, Client } from './app';
 import fetch from 'cross-fetch';
+import { createRpc, wrapInClient, Client } from './app';
 
 describe('server error handling', () => {
   it.concurrent(

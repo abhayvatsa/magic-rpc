@@ -1,9 +1,8 @@
 import { Ok, Err, Result, ResultOkType, ResultErrType } from './result';
-import crossFetch from 'cross-fetch';
 import invariant from 'tiny-invariant';
 import { Request } from './server';
 
-export type Fetch = typeof crossFetch;
+export type Fetch = typeof window.fetch;
 
 export class RpcError {
   message: string;
@@ -38,7 +37,11 @@ export type Client<T> = {
 /**
  * The Client uses a typed proxy to make API calls to the server.
  */
-export function createClient<T>(url: string, fetch = crossFetch): Client<T> {
+export function createClient<T>(url: string, fetch = window?.fetch): Client<T> {
+  if (typeof fetch === 'undefined') {
+    throw Error('createClient was not passed fetch');
+  }
+
   let idSeed = 1;
 
   return new Proxy(
