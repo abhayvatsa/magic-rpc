@@ -38,9 +38,7 @@ export type Client<T> = {
  * The Client uses a typed proxy to make API calls to the server.
  */
 export function createClient<T>(url: string, fetch = window?.fetch): Client<T> {
-  if (typeof fetch === 'undefined') {
-    throw Error('createClient was not passed fetch');
-  }
+  invariant(typeof fetch !== 'undefined', 'not passed a valid `fetch`');
 
   let idSeed = 1;
 
