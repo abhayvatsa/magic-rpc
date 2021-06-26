@@ -1,10 +1,10 @@
 import fetch from 'cross-fetch';
-import { createRpc, wrapInClient, Client } from './app';
+import { createRpc, wrapInClient } from './app';
 
 describe('server error handling', () => {
   it.concurrent(
     'Test a method that does not exist',
-    wrapInClient(async (client: Client) => {
+    wrapInClient(async (client) => {
       // @ts-expect-error: We are destructured a method that does not exist on client
       const { DOES_NOT_EXIST } = client;
       const { val, ok, stack } = await DOES_NOT_EXIST('world');
@@ -35,7 +35,7 @@ describe('server error handling', () => {
 
   it.concurrent(
     'Try a method prefixed with _',
-    wrapInClient(async ({ _superSecretMethod }: Client) => {
+    wrapInClient(async ({ _superSecretMethod }) => {
       // This is usually a private method to the server
       const result = await _superSecretMethod();
 

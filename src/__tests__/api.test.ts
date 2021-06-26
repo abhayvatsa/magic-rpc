@@ -1,9 +1,9 @@
-import { wrapInClient, Client } from './app';
+import { wrapInClient } from './app';
 
 describe('API', () => {
   it.concurrent(
     'Test a synchronous method returning non-Result',
-    wrapInClient(async ({ hello }: Client) => {
+    wrapInClient(async ({ hello }) => {
       const result = await hello('world');
 
       expect(result.ok).toEqual(true);
@@ -13,7 +13,7 @@ describe('API', () => {
 
   it.concurrent(
     'Test incorrect number of arguments',
-    wrapInClient(async ({ hello }: Client) => {
+    wrapInClient(async ({ hello }) => {
       // @ts-expect-error Purposely calling with incorrect # of arguments
       const result = await hello();
 
@@ -26,7 +26,7 @@ describe('API', () => {
 
   it.concurrent(
     'Test an asynchronous method returning non-Result',
-    wrapInClient(async ({ goodbye }: Client) => {
+    wrapInClient(async ({ goodbye }) => {
       const { val } = await goodbye('abhay');
 
       expect(val).toEqual('Goodbye abhay!');
@@ -35,7 +35,7 @@ describe('API', () => {
 
   it.concurrent(
     'Test an asynchronous method return OkImpl',
-    wrapInClient(async ({ getUnixTime }: Client) => {
+    wrapInClient(async ({ getUnixTime }) => {
       const { ok, val } = await getUnixTime();
 
       expect(ok && typeof val === 'number');
@@ -44,7 +44,7 @@ describe('API', () => {
 
   it.concurrent(
     'Test an asynchronous method returning OkImpl/ErrImpl',
-    wrapInClient(async ({ getPeople }: Client) => {
+    wrapInClient(async ({ getPeople }) => {
       const result = await getPeople();
 
       expect(
@@ -56,7 +56,7 @@ describe('API', () => {
 
   it.concurrent(
     'Test an asynchronous method returning Result',
-    wrapInClient(async ({ divide }: Client) => {
+    wrapInClient(async ({ divide }) => {
       const result = await divide(10, 0);
 
       expect(result.ok).toEqual(false);

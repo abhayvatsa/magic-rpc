@@ -1,11 +1,11 @@
 import { assert, IsExact } from 'conditional-type-checks';
 import { RpcError } from '../';
-import { wrapInClient, Client } from './app';
+import { wrapInClient } from './app';
 
 describe('typechecking', () => {
   it.concurrent(
     'type narrowing works correctly',
-    wrapInClient(async ({ divide }: Client) => {
+    wrapInClient(async ({ divide }) => {
       const result = await divide(10, 0);
 
       if (result.ok) {

@@ -3,7 +3,7 @@ import { createClient, createServer } from '../';
 import { methods } from './methods';
 
 type Await<T> = T extends Promise<infer U> ? U : T;
-export type Client = Await<ReturnType<typeof createRpc>>['client'];
+type Client = Await<ReturnType<typeof createRpc>>['client'];
 
 export const createRpc = async function () {
   const server = await createServer(methods);
