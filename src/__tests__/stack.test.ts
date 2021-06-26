@@ -1,9 +1,9 @@
-import { wrapInClient, Client } from './app';
+import { wrapInClient } from './app';
 
 describe('stack', () => {
   it.concurrent(
     'Ensure stack trace exists in non-production',
-    wrapInClient(async function ({ divide }: Client) {
+    wrapInClient(async function ({ divide }) {
       const result = await divide(10, 0);
 
       expect(result.ok).toEqual(false);
