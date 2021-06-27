@@ -14,6 +14,10 @@ export type { Request };
 export type Methods = {
   [method: string]: Method;
 };
+export type Services = {
+  [service: string]: Methods;
+};
+
 export { Server };
 
 async function getResult(action: <T = unknown, R = unknown>(args?: T) => R) {
@@ -36,7 +40,7 @@ async function getResult(action: <T = unknown, R = unknown>(args?: T) => R) {
 /**
  * createMiddleware responds to HTTP requests using methods provided.
  */
-export const createMiddleware = function (methods: Methods) {
+export const createMiddleware = function (services: Services) {
   async function handleRequest(req: Request, res: Response): Promise<void> {
     invariant(
       typeof req.body === 'object',
@@ -52,8 +56,12 @@ export const createMiddleware = function (methods: Methods) {
       !req.body.method?.startsWith('_'),
       `Cannot call methods prefixed with '_': '${req.body.method}'`
     );
+
+    const service = services[req.body.service];
+    invariant(service, `Service '${req.body.service}' does not exist`);
+
     invariant(
-      methods[req.body.method]?.call,
+      service[req.body.method]?.call,
       `Method does not exist: '${req.body.method}'`
     );
     invariant(
@@ -61,7 +69,7 @@ export const createMiddleware = function (methods: Methods) {
       `Parameters must be an array: ${req.body.params}`
     );
 
-    const method = methods[req.body.method];
+    const method = service[req.body.method];
     const args = [req, ...req.body.params];
     invariant(
       method.length === args.length,
@@ -107,7 +115,7 @@ interface Server extends Omit<ServerBase, 'address'> {
   address: () => AddressInfo;
 }
 export async function createServer(
-  methods: Methods,
+  methods: Services,
   port = 0,
   path = '/rpc'
 ): Promise<Server> {

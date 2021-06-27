@@ -1,12 +1,12 @@
 import fetch from 'cross-fetch';
 import { createClient, createServer } from '../';
-import { methods } from './methods';
+import { services } from './services';
 
 type Await<T> = T extends Promise<infer U> ? U : T;
 type Client = Await<ReturnType<typeof createRpc>>['client'];
 
 export const createRpc = async function () {
-  const server = await createServer(methods);
+  const server = await createServer(services);
   const rpcUrl = `http://localhost:${server.address().port}/rpc`;
 
   return {
@@ -14,7 +14,7 @@ export const createRpc = async function () {
 
     teardown: () => server.close(),
 
-    client: createClient<typeof methods>(rpcUrl, fetch),
+    client: createClient<typeof services>(services, rpcUrl, fetch),
   };
 };
 
