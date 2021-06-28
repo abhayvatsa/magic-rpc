@@ -4,9 +4,9 @@ import { createRpc, wrapInClient } from './app';
 describe('server error handling', () => {
   it.concurrent(
     'Test a method that does not exist',
-    wrapInClient(async (client) => {
+    wrapInClient(async ({ math }) => {
       // @ts-expect-error: We are destructured a method that does not exist on client
-      const { DOES_NOT_EXIST } = client;
+      const { DOES_NOT_EXIST } = math;
       const { val, ok, stack } = await DOES_NOT_EXIST('world');
 
       expect(ok).toEqual(false);
@@ -35,9 +35,9 @@ describe('server error handling', () => {
 
   it.concurrent(
     'Try a method prefixed with _',
-    wrapInClient(async ({ _superSecretMethod }) => {
+    wrapInClient(async ({ fs }) => {
       // This is usually a private method to the server
-      const result = await _superSecretMethod();
+      const result = await fs._superSecretMethod();
 
       expect(result.err).toEqual(true);
     })

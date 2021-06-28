@@ -6,10 +6,10 @@ import { wrapInClient } from './app';
 describe('stack trace in production', () => {
   it(
     "Ensure we don't leak stack traces in production",
-    wrapInClient(async function ({ divide }) {
+    wrapInClient(async function ({ math }) {
       const temp = process.env.NODE_ENV;
       process.env.NODE_ENV = 'production';
-      const result = await divide(10, 0);
+      const result = await math.divide(10, 0);
       process.env.NODE_ENV = temp;
 
       expect(result.ok).toEqual(false);

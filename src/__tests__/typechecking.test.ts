@@ -5,8 +5,8 @@ import { wrapInClient } from './app';
 describe('typechecking', () => {
   it.concurrent(
     'type narrowing works correctly',
-    wrapInClient(async ({ divide }) => {
-      const result = await divide(10, 0);
+    wrapInClient(async ({ math }) => {
+      const result = await math.divide(10, 0);
 
       if (result.ok) {
         assert<IsExact<typeof result.val, number>>(true);
