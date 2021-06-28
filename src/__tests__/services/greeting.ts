@@ -1,11 +1,11 @@
-import { Request } from '../../';
+import { Ok, Request } from '../../';
 
 export default {
   hello(_: Request, name: string) {
-    return `Hello ${name}!!`;
+    return `Hello ${name}!`;
   },
 
-  async goodbye(_req: Request, name: string) {
-    return `Goodbye ${name}!`;
+  async goodbye(_: Request, name: string) {
+    return Ok(`Goodbye ${name}!`);
   },
 };
