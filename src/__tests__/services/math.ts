@@ -1,11 +1,40 @@
-import { Ok, Err, Request } from '../../';
+import { Ok, Err, Request, Result } from '../../';
 
+// Note: return types vary just to make testing easier
 export default {
-  // Ret: asynchronous return value + Result<T,E> return type
-  divide(_req: Request, dividend: number, divisor: number) {
-    if (divisor === 0) {
-      return Err('Divided by zero' as const);
+  add(_: Request, a: number, b: number) {
+    const sum = a + b;
+
+    if (sum - b != a || sum - a != b) {
+      return Err('Number overflow');
     }
-    return Ok(dividend / divisor);
+
+    return sum;
+  },
+
+  async subtract(_: Request, a: number, b: number) {
+    return Ok(a - b);
+  },
+
+  async multiply(_: Request, a: number, b: number) {
+    const product = a * b;
+
+    if (product / b !== a || product / a !== b) {
+      return Err('Number overflow');
+    }
+
+    return Ok(product);
+  },
+
+  async divide(
+    _: Request,
+    a: number,
+    b: number
+  ): Promise<Result<number, 'Divided by zero'>> {
+    if (b === 0) {
+      return Err('Divided by zero');
+    }
+
+    return Ok(a / b);
   },
 };
