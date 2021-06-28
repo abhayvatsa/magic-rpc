@@ -55,7 +55,6 @@ export function createClient<T>(
   const keys = Object.keys(services) as Array<keyof T>;
 
   const acc = {} as Proxify<T>;
-  //const acc = {} as T;
   let idSeed = 1;
 
   const proxies = keys.reduce((acc, service) => {
