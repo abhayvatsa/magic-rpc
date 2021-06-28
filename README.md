@@ -36,7 +36,7 @@ on your server.
 
 ```typescript
 // Note: `divide` is a remote procedure call and goes over a network boundary
-const result = divide(10, 0);
+const result = await divide(10, 0);
 ```
 
 Server methods functions have a return type of `Result<T, E>` or
