@@ -39,7 +39,8 @@ export type Client<T> = {
 //type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 
 type Proxify<T> = {
-  [K in keyof T]: T[K] extends Methods ? Client<T[K]> : never;
+  //[K in keyof T]: T[K] extends Methods ? Client<T[K]> : never;
+  [K in keyof T]: Client<T[K]>; //T[K] extends Methods ? string : never;
 };
 
 /**
@@ -57,7 +58,7 @@ export function createClient<T>(
   //const acc = {} as T;
   let idSeed = 1;
 
-  const proxies = keys.reduce((service) => {
+  const proxies = keys.reduce((acc, service) => {
     acc[service] = new Proxy(
       {},
       {
@@ -104,8 +105,10 @@ export function createClient<T>(
           };
         },
       }
-    ) as Client<T[typeof service]>;
-  });
+    ) as Client<typeof services[typeof service]>;
+    return acc;
+    //) as string;
+  }, acc);
 
   return proxies;
 

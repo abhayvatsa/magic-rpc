@@ -3,8 +3,8 @@ import { wrapInClient } from './app';
 describe('stack', () => {
   it.concurrent(
     'Ensure stack trace exists in non-production',
-    wrapInClient(async function ({ divide }) {
-      const result = await divide(10, 0);
+    wrapInClient(async function ({ math }) {
+      const result = await math.divide(10, 0);
 
       expect(result.ok).toEqual(false);
       if (!result.ok) {
