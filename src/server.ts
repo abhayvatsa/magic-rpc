@@ -38,9 +38,9 @@ async function getResult(action: <T = unknown, R = unknown>(args?: T) => R) {
 }
 
 /**
- * createMiddleware responds to HTTP requests using methods provided.
+ * createRpcHandler responds to HTTP requests using methods provided.
  */
-export const createMiddleware = function (services: Services) {
+export const createRpcHandler = function (services: Services) {
   async function handleRequest(req: Request, res: Response): Promise<void> {
     invariant(
       typeof req.body === 'object',
@@ -106,7 +106,7 @@ export const createMiddleware = function (services: Services) {
   };
 };
 
-export type Middleware = ReturnType<typeof createMiddleware>;
+export type RpcHandler = ReturnType<typeof createRpcHandler>;
 
 /**
  * The createServer returns an Express server with RPC middleware on /`path`
@@ -124,7 +124,7 @@ export async function createServer(
   const app = express();
 
   app.use(express.json());
-  app.use(path, createMiddleware(methods));
+  app.use(path, createRpcHandler(methods));
 
   return new Promise((resolve) => {
     const server = app.listen(port, () => resolve(server)) as Server;

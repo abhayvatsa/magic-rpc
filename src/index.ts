@@ -1,7 +1,7 @@
 export { createClient, Client } from './client';
 export {
-  createMiddleware,
-  Middleware,
+  createRpcHandler,
+  RpcHandler,
   createServer,
   Server,
   Request,

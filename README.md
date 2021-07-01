@@ -1,8 +1,12 @@
 # magic-rpc [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/abhayvatsa/magic-rpc/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/magic-rpc.svg?style=flat)](https://www.npmjs.com/package/magic-rpc)
 
-A strongly-typed RPC framework with compile-time error checking.
+A typesafe RPC framework with compile-time error checking.
 
-## Motivation
+<details>
+
+<summary>🤔 Why is this useful?</summary>
+
+**Motivation:**
 
 It helps to have correctness guarantees from your compiler when writing your
 programs. This is applicable when writing client-server applications, but
@@ -19,6 +23,8 @@ Our error propagation is inspired by
 [Rust's Result type](https://doc.rust-lang.org/std/result/), which returns a
 tuple of `Result<T, E>` from a function. Here `T` is your data type and `E` is
 your error type.
+
+</details>
 
 ## Features
 
@@ -43,42 +49,23 @@ Server methods functions have a return type of `Result<T, E>` or
 `Ok<T> | Err<E>`). Below, the return type of `divide` has a return type of
 `Result<number, 'Divided by zero'>` or `Ok<number> | Err<'Divided by zero'>`
 
-```typescript
-// methods.ts
-import { Ok, Err } from 'magic-rpc'
-
-// These are methods the server will expose
-export const methods = {
-  divide(
-    _req,
-    x: number,
-    y: number
-  )> {
-    if (y === 0) {
-      return Err('Divided by zero' as const)
-    } else {
-      return Ok(x / y)
-    }
-  },
-}
-```
-
 Create a client that is aware of the return types of your methods.
 
 ```typescript
 // client.ts
 import { createClient } from 'magic-rpc';
-import { methods } from './methods';
+import type { Services } from './server';
 
 // Create RPC client
-const { divide } = createClient<typeof methods>(`http://localhost:8080/rpc`);
+const { math } = createClient<Services>(`http://localhost:8080/rpc`);
 
 // Invoke method on RPC client
-const result = await divide(10, 0); // result: Result<number, 'Divided by zero'>
+const result = await math.divide(10, 0); // result: Result<number, 'Divided by zero'>
 
 // TS now forces you to check whether you have a valid result at compile time.
 if (result.ok) {
   const quotient = result.val; //  type narrowing guarantees `quotient` is a `number`
+  console.log(`Success: ${quotient}`);
 } else {
   const err = result.val;
 }
@@ -88,14 +75,32 @@ Finally, this is what configuring your server looks like.
 
 ```typescript
 // server.ts
-import { createMiddleware } from 'magic-rpc';
+import { createRpcHandler, Ok, Err } from 'magic-rpc';
 import express from 'express';
-import { methods } from './methods';
+
+// These are methods the server will expose
+const services = {
+  math: {
+    divide(
+      _req,
+      x: number,
+      y: number
+    )> : Result<number, 'Divided by zero'>{
+      if (y === 0) {
+        return Err('Divided by zero')
+      } else {
+        return Ok(x / y)
+      }
+    },
+  }
+}
+
+export type Services = typeof services
 
 // Configure express server
 const app = express();
 app.use(express.json());
-app.post('/rpc', createMiddleware(methods));
+app.post('/rpc', createRpcHandler(services));
 
 // Start server
 app.listen(8080);
