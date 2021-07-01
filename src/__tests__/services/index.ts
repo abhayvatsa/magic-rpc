@@ -8,8 +8,4 @@ export const services = {
   math,
 };
 
-export const names = (<T>(obj: T) => Object.keys(obj) as Array<keyof T>)(
-  services
-);
-
 export type Services = typeof services;
