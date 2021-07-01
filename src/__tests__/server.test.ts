@@ -5,13 +5,13 @@ describe('server error handling', () => {
   it.concurrent(
     'Test a method that does not exist',
     wrapInClient(async ({ math }) => {
-      // @ts-expect-error: We are destructured a method that does not exist on client
+      // @ts-expect-error: We destructured a method that does not exist on client
       const { DOES_NOT_EXIST } = math;
-      const { val, ok, stack } = await DOES_NOT_EXIST('world');
+      const result = await DOES_NOT_EXIST('world');
 
-      expect(ok).toEqual(false);
-      expect(stack).toBeTruthy();
-      expect(val.includes('Method does not exist')).toBeTruthy();
+      expect(result.ok).toEqual(false);
+      expect(result.stack).toBeTruthy();
+      expect(result.val.includes('Method does not exist')).toBeTruthy();
     })
   );
 
