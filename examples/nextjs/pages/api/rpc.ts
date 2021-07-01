@@ -1,4 +1,4 @@
 import { createMiddleware } from 'magic-rpc';
-import methods from '../../methods/';
+import { services } from '../../services/';
 
-export default createMiddleware(methods);
+export default createMiddleware(services);

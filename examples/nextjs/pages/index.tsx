@@ -19,7 +19,7 @@ export default function Home() {
     const x = parseInt(num1.current.value);
     const y = parseInt(num2.current.value);
 
-    const response = await client.divide(x, y);
+    const response = await client.math.divide(x, y);
 
     if (response.ok) {
       // type narrowing guarantees `response.val` is of type `number`
