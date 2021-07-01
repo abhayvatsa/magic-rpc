@@ -1,5 +1,5 @@
 // server.ts
-import { createMiddleware, Err, Ok } from 'magic-rpc';
+import { createRpcHandler, Err, Ok } from 'magic-rpc';
 import express from 'express';
 
 // Define some services
@@ -20,4 +20,4 @@ export type Services = typeof services;
 // Configure server
 export const app = express();
 app.use(express.json());
-app.post('/rpc', createMiddleware(services));
+app.post('/rpc', createRpcHandler(services));

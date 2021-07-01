@@ -44,23 +44,7 @@ Server methods functions have a return type of `Result<T, E>` or
 `Result<number, 'Divided by zero'>` or `Ok<number> | Err<'Divided by zero'>`
 
 ```typescript
-// methods.ts
-import { Ok, Err } from 'magic-rpc'
 
-// These are methods the server will expose
-export const methods = {
-  divide(
-    _req,
-    x: number,
-    y: number
-  )> {
-    if (y === 0) {
-      return Err('Divided by zero' as const)
-    } else {
-      return Ok(x / y)
-    }
-  },
-}
 ```
 
 Create a client that is aware of the return types of your methods.
@@ -68,17 +52,18 @@ Create a client that is aware of the return types of your methods.
 ```typescript
 // client.ts
 import { createClient } from 'magic-rpc';
-import { methods } from './methods';
+import type { Services } from './server;
 
 // Create RPC client
-const { divide } = createClient<typeof methods>(`http://localhost:8080/rpc`);
+const { math } = createClient<Services>(`http://localhost:8080/rpc`);
 
 // Invoke method on RPC client
-const result = await divide(10, 0); // result: Result<number, 'Divided by zero'>
+const result = await math.divide(10, 0); // result: Result<number, 'Divided by zero'>
 
 // TS now forces you to check whether you have a valid result at compile time.
 if (result.ok) {
   const quotient = result.val; //  type narrowing guarantees `quotient` is a `number`
+  console.log(`Success: ${quotient}`);
 } else {
   const err = result.val;
 }
@@ -88,14 +73,32 @@ Finally, this is what configuring your server looks like.
 
 ```typescript
 // server.ts
-import { createMiddleware } from 'magic-rpc';
+import { createRpcHandler, Ok, Err } from 'magic-rpc';
 import express from 'express';
-import { methods } from './methods';
+
+// These are methods the server will expose
+const services = {
+  math: {
+    divide(
+      _req,
+      x: number,
+      y: number
+    )> : Result<number, 'Divided by zero'>{
+      if (y === 0) {
+        return Err('Divided by zero')
+      } else {
+        return Ok(x / y)
+      }
+    },
+  }
+}
+
+export type Services = typeof services
 
 // Configure express server
 const app = express();
 app.use(express.json());
-app.post('/rpc', createMiddleware(methods));
+app.post('/rpc', createRpcHandler(services));
 
 // Start server
 app.listen(8080);
