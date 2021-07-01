@@ -42,17 +42,16 @@ export type Client<T> = {
  * The Client uses a typed proxy to make API calls to the server.
  */
 export function createClient<T>(
-  services: T,
+  services: Array<keyof T>,
   url: string,
   fetch = window?.fetch
 ) {
   invariant(typeof fetch !== 'undefined', 'not passed a valid `fetch`');
-  const keys = Object.keys(services) as Array<keyof T>;
 
   const acc = {} as Client<T>;
   let idSeed = 1;
 
-  return keys.reduce((acc, service) => {
+  return services.reduce((acc, service) => {
     acc[service] = new Proxy(
       {},
       {
@@ -97,7 +96,7 @@ export function createClient<T>(
           };
         },
       }
-    ) as ClientService<typeof services[typeof service]>;
+    ) as ClientService<T[typeof service]>;
     return acc;
   }, acc);
 }
