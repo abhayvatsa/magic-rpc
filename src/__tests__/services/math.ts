@@ -6,7 +6,7 @@ export default {
     const sum = a + b;
 
     if (sum - b != a || sum - a != b) {
-      return Err('Number overflow');
+      return Err('Number overflow' as const);
     }
 
     return sum;
@@ -20,7 +20,7 @@ export default {
     const product = a * b;
 
     if (product / b !== a || product / a !== b) {
-      return Err('Number overflow');
+      return Err('Number overflow' as const);
     }
 
     return Ok(product);

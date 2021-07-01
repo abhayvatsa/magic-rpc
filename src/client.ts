@@ -106,7 +106,6 @@ export function createClient<T>(
       }
     ) as Client<typeof services[typeof service]>;
     return acc;
-    //) as string;
   }, acc);
 
   return proxies;
