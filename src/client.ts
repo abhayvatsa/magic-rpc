@@ -92,9 +92,7 @@ export function createClient<T>(
               } = json;
 
               if (err) {
-                const e = Err(val);
-                (e as any)._stack = _stack;
-                return e;
+                return Err(val, _stack);
               }
 
               return Ok(val);
