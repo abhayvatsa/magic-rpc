@@ -43,16 +43,12 @@ Server methods functions have a return type of `Result<T, E>` or
 `Ok<T> | Err<E>`). Below, the return type of `divide` has a return type of
 `Result<number, 'Divided by zero'>` or `Ok<number> | Err<'Divided by zero'>`
 
-```typescript
-
-```
-
 Create a client that is aware of the return types of your methods.
 
 ```typescript
 // client.ts
 import { createClient } from 'magic-rpc';
-import type { Services } from './server;
+import type { Services } from './server';
 
 // Create RPC client
 const { math } = createClient<Services>(`http://localhost:8080/rpc`);
