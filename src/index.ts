@@ -1,4 +1,4 @@
-export { createClient, Client, RpcError } from './client';
+export { createClient, Client } from './client';
 export {
   createMiddleware,
   Middleware,
