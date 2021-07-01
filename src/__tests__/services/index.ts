@@ -7,3 +7,9 @@ export const services = {
   greeting,
   math,
 };
+
+export const names = (<T>(obj: T) => Object.keys(obj) as Array<keyof T>)(
+  services
+);
+
+export type Services = typeof services;
