@@ -41,8 +41,11 @@ export type Client<T> = {
 /**
  * The Client uses a typed proxy to make API calls to the server.
  */
-export function createClient<T>(url: string, fetch = window?.fetch) {
-  invariant(typeof fetch !== 'undefined', 'not passed a valid `fetch`');
+export function createClient<T>(
+  url: string,
+  fetch = typeof window !== 'undefined' ? window?.fetch : null
+) {
+  invariant(fetch !== null, 'not passed a valid `fetch`');
 
   let idSeed = 1;
 
@@ -52,56 +55,57 @@ export function createClient<T>(url: string, fetch = window?.fetch) {
       get(_, service: string) {
         if (service === 'then') return null; // Proxy is not thennable (enable returning from async functions)
 
-        return serviceProxy(service as keyof T);
+        return (function serviceProxy(service: keyof T) {
+          return new Proxy(
+            {},
+            {
+              get(_, method: string) {
+                if (method === 'then') return null; // Proxy is not thennable (enable returning from async functions)
+
+                return async (...params: unknown[]) => {
+                  const id = (idSeed++).toString();
+
+                  try {
+                    const response = await fetch(url, {
+                      method: 'post',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        jsonrpc: '2.0',
+                        service,
+                        method,
+                        params,
+                        id,
+                      }),
+                    });
+                    const text = await response.text();
+                    const json = JSON.parse(text);
+
+                    invariant(
+                      json.jsonrpc === '2.0',
+                      'invalid jsonrpc version'
+                    );
+                    invariant(json.id === id, 'invalid response id');
+
+                    const {
+                      result: { err, val, _stack },
+                    } = json;
+
+                    if (err) {
+                      return Err(val, _stack);
+                    }
+
+                    return Ok(val);
+                  } catch (err) {
+                    return Err(new RpcError('Unexpected request error!'));
+                  }
+                };
+              },
+            }
+          ) as ClientService<T[typeof service]>;
+        })(service as keyof T);
       },
     }
   ) as Client<T>;
-
-  function serviceProxy(service: keyof T) {
-    return new Proxy(
-      {},
-      {
-        get(_, method: string) {
-          if (method === 'then') return null; // Proxy is not thennable (enable returning from async functions)
-
-          return async (...params: unknown[]) => {
-            const id = (idSeed++).toString();
-
-            try {
-              const response = await fetch(url, {
-                method: 'post',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  jsonrpc: '2.0',
-                  service,
-                  method,
-                  params,
-                  id,
-                }),
-              });
-              const text = await response.text();
-              const json = JSON.parse(text);
-
-              invariant(json.jsonrpc === '2.0', 'invalid jsonrpc version');
-              invariant(json.id === id, 'invalid response id');
-
-              const {
-                result: { err, val, _stack },
-              } = json;
-
-              if (err) {
-                return Err(val, _stack);
-              }
-
-              return Ok(val);
-            } catch (err) {
-              return Err(new RpcError('Unexpected request error!'));
-            }
-          };
-        },
-      }
-    ) as ClientService<T[typeof service]>;
-  }
 }
