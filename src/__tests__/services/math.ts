@@ -5,7 +5,7 @@ export default {
   add(_: Request, a: number, b: number) {
     const sum = a + b;
 
-    if (sum - b != a || sum - a != b) {
+    if (sum - b !== a || sum - a !== b) {
       return Err('Number overflow' as const);
     }
 

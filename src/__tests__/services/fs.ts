@@ -5,7 +5,7 @@ export default {
     return; // To implement
   },
 
-  _superSecretMethod(_req: Request) {
+  _superSecretMethod(_: Request) {
     return 'serverSideSecret';
   },
 };
