@@ -4,13 +4,6 @@ import { Request } from './server';
 
 export type Fetch = typeof window.fetch;
 
-export class RpcError {
-  message: string;
-  constructor(message: string) {
-    this.message = message;
-  }
-}
-
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 type UnwrapResultOk<T> = T extends Result<unknown, unknown>
   ? ResultOkType<T>
@@ -28,7 +21,7 @@ type ClientService<T> = {
       ) => Promise<
         Result<
           UnwrapResultOk<UnwrapPromise<P>>,
-          ResultErrType<UnwrapPromise<P>> | RpcError
+          ResultErrType<UnwrapPromise<P>>
         >
       >
     : never;
@@ -98,7 +91,7 @@ export function createClient<T>(
 
                     return Ok(val);
                   } catch (err) {
-                    return Err(new RpcError('Unexpected request error!'));
+                    return Err(Error('Unexpected request error!'));
                   }
                 };
               },
