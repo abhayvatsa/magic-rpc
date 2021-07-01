@@ -1,0 +1,19 @@
+{
+  "name": "express-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/main.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Abhay Vatsa",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^10.0.0"
+  },
+  "dependencies": {
+    "cross-fetch": "^3.1.4",
+    "magic-rpc": "^0.0.14"
+  }
+}
