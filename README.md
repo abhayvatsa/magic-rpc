@@ -31,14 +31,12 @@ This project is loosely based on
 
 </details>
 
-## Features
+## Intro
 
-_Note: Some features are in development_
-
-- [x] RPC Client that can propagate errors, data types, stack traces over a
-      network boundary
-- [ ] Stack traces and errors are anonymized/hidden in production
-- [ ] Runtime type guards on client boundaries
+- 🪄**Magical typesafety** RPC Client that can propagate errors, data typ over a
+  network boundary
+- 👩🏼‍💻**Great Developer Experience**:
+- 🔍 See stack traces from server code in development
 
 ## Usage
 
