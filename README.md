@@ -2,7 +2,7 @@
 
 A typesafe RPC framework with compile-time error checking.
 
-![intellisense-works-great](https://user-images.githubusercontent.com/15083292/124220989-ad835a80-dab3-11eb-87a1-dd3eef4622cb.mp4)
+![intellisense-works-great](https://user-images.githubusercontent.com/15083292/124224599-d2c79700-daba-11eb-8e79-b35dbce50ef8.mp4)
 
 🤔 Why is this useful?
 
