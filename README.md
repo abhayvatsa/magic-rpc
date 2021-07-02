@@ -94,7 +94,7 @@ See stack traces from server code in development
 ### 🚧 Easy to try in an existing project
 
 Can be easily deployed into an brownfield project for a small part of your app.
-Zero dependencies, and will work with front-end framework.
+Zero dependencies, and designed to play well with all front-end framework.
 
 ## Usage
 
@@ -178,12 +178,11 @@ $ curl localhost:8080/rpc \
   --header "Content-Type: application/json" \
   --request POST \
   --data '{
-    "jsonrpc": "2.0",
     "service": "math",
     "method": "divide",
     "params": [99, 3]
   }'
-{"jsonrpc":"2.0","result":{"ok":true,"err":false,"val":33}}
+{"result":{"ok":true,"err":false,"val":33}}
 ```
 
 </details>
