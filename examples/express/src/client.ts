@@ -7,13 +7,8 @@ export async function main() {
   // Create an RPC Client
   const { math } = createClient<Services>(`http://localhost:8080/rpc`, fetch);
 
-  const result = await math.divide(10, 2); // Invoke method on RPC client
+  // Invoke method on RPC client
+  const result = await math.divide(10, 2);
 
-  // NOTE: TypeScript enforces error checking through type narrowing.
-  if (result.ok) {
-    const quotient = result.val;
-    console.log(`quotient: ${quotient}`);
-  } else {
-    console.log(`FAILURE: ${result.val}`);
-  }
+  console.log(result.val);
 }

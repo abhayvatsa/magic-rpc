@@ -1,16 +1,20 @@
 // server.ts
-import { createRpcHandler, Err, Ok } from 'magic-rpc';
+import { createRpcHandler, Request } from 'magic-rpc';
 import express from 'express';
 
 // Define some services
 const services = {
+  greeting: {
+    square(_: Request: name: string) {
+      return `Hello ${name} from rpc server`;
+    },
+  },
   math: {
-    async divide(_: any, x: number, y: number) {
-      if (y === 0) {
-        return Err('Divided by zero' as const);
-      } else {
-        return Ok(x / y);
-      }
+    square(_: Request: x: number) {
+      return x * x;
+    },
+    divide(_: Request, x: number, y: number) {
+      return x / y;
     },
   },
 };
