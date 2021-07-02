@@ -194,3 +194,4 @@ $ curl localhost:8080/rpc \
 - [trpc](https://github.com/vriad/trpc)
 - [jsonrpc-ts](https://github.com/shekohex/jsonrpc-ts)
 - [rpc_ts](https://github.com/aiden/rpc_ts)
+- [ts-alias](https://github.com/coffeemug/ts-alias)
