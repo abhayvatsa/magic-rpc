@@ -33,10 +33,13 @@ This project is loosely based on
 
 ## Intro
 
-- 🪄**Magical typesafety** RPC Client that can propagate errors, data typ over a
-  network boundary
-- 👩🏼‍💻**Great Developer Experience**:
-- 🔍 See stack traces from server code in development
+### 🪄**Magical type inference** RPC Client that can propagate errors, data typ over
+
+a network boundary
+
+### 👩🏼‍💻**Great Developer Experience**:
+
+### 🔍 See stack traces from server code in development
 
 ## Usage
 
