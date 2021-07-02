@@ -65,7 +65,6 @@ export function createClient<T>(
                         'Content-Type': 'application/json',
                       },
                       body: JSON.stringify({
-                        jsonrpc: '2.0',
                         service,
                         method,
                         params,
@@ -75,10 +74,6 @@ export function createClient<T>(
                     const text = await response.text();
                     const json = JSON.parse(text);
 
-                    invariant(
-                      json.jsonrpc === '2.0',
-                      'invalid jsonrpc version'
-                    );
                     invariant(json.id === id, 'invalid response id');
 
                     const {

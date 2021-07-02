@@ -24,6 +24,11 @@ Our error propagation is inspired by
 tuple of `Result<T, E>` from a function. Here `T` is your data type and `E` is
 your error type.
 
+**Inspiration:**
+
+This project is loosely based on
+[JSON RPC](https://www.jsonrpc.org/specification).
+
 </details>
 
 ## Features

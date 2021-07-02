@@ -21,7 +21,6 @@ describe('server error handling', () => {
     try {
       const { result } = await fetch(rpc.rpcUrl, {
         method: 'DELETE',
-        body: JSON.stringify({ jsonrpc: '2.0' }),
         headers: { 'Content-Type': 'application/json' },
       }).then((r) => r.json());
 

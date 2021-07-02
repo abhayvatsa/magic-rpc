@@ -47,7 +47,6 @@ export const createRpcHandler = function (services: Services) {
       'req.body was not an object, is JSON parsing enabled?'
     );
     invariant(!Array.isArray(req.body), 'Do not support batched request'); // TODO: support batch
-    invariant(req.body.jsonrpc === '2.0', 'jsonrpc version is not 2.0');
     invariant(
       req.method?.toUpperCase() === 'POST',
       `Only HTTP POST is supported: '${req.method}'`
@@ -86,7 +85,6 @@ export const createRpcHandler = function (services: Services) {
 
     res.end(
       JSON.stringify({
-        jsonrpc: '2.0',
         id: req.body.id,
         result,
       })
@@ -98,7 +96,6 @@ export const createRpcHandler = function (services: Services) {
       await handleRequest(req, res);
     } catch (e) {
       res.json({
-        jsonrpc: '2.0',
         id: req.body.id,
         result: Err(e.message),
       });
