@@ -2,9 +2,15 @@
 
 A typesafe RPC framework with compile-time error checking.
 
+🤔 Why is this useful?
+
+You can think of `magic-rpc` as a way to write APIs _quickly_ and [typed]
+_safely_. It avoids the clunkiness of REST and the boilerplate/complexity of
+GraphQL.
+
 <details>
 
-<summary>🤔 Why is this useful?</summary>
+<summary>👩🏼‍🏫 I want more boring details!</summary>
 
 **Motivation:**
 
@@ -31,14 +37,62 @@ This project is loosely based on
 
 </details>
 
+## Install
+
+```bash
+npm i magic-rpc
+```
+
+<details>
+  
+<summary>
+⚠️ IMPORTANT: You must enable `strictNullChecks` in your `tsconfig.json`.
+</summary>
+ 
+  Typescript currently has a
+  [bug](https://github.com/microsoft/TypeScript/issues/10564), making type
+  narrowing only work when `strictNullChecks` is turned on.
+  
+  ```jsonc
+  // tsconfig.json
+  {
+    // ...
+    "compilerOptions": {
+      // ...
+      "strictNullChecks": true
+    }
+  }
+  ```
+
+</details>
+
 ## Features
 
-_Note: Some features are in development_
+### 🪄 **Magical type inference**
 
-- [x] RPC Client that can propagate errors, data types, stack traces over a
-      network boundary
-- [ ] Stack traces and errors are anonymized/hidden in production
-- [ ] Runtime type guards on client boundaries
+Invoke methods in your client code with type guarantees but **without strange
+`import` paths**.
+
+### ⚡️ **Fast Developer Experience**
+
+No code generation is required, speeding up your iteration!
+
+### 😌 **Minimal boilerplate**
+
+Intuitive syntax without complexity. Looks just like methods invocations.
+
+### 😓 **No run-time bloat**
+
+Compiled output requires no runtime code. Tiny library footprint.
+
+### 🔍 **Observability**
+
+See stack traces from server code in development
+
+### 🚧 Easy to try in an existing project
+
+Can be easily deployed into an brownfield project for a small part of your app.
+Zero dependencies, and will work with front-end framework.
 
 ## Usage
 
@@ -111,11 +165,26 @@ app.post('/rpc', createRpcHandler(services));
 app.listen(8080);
 ```
 
-## Caveats
+<details>
 
-- Typescript currently has a
-  [bug](https://github.com/microsoft/TypeScript/issues/10564), making type
-  narrowing only work when `strictNullChecks` is turned on.
+<summary>
+What does a `curl` command look like?
+</summary>
+
+```bash
+$ curl localhost:8080/rpc \
+  --header "Content-Type: application/json" \
+  --request POST \
+  --data '{
+    "jsonrpc": "2.0",
+    "service": "math",
+    "method": "divide",
+    "params": [99, 3]
+  }'
+{"jsonrpc":"2.0","result":{"ok":true,"err":false,"val":33}}
+```
+
+</details>
 
 ## Alternatives
 
