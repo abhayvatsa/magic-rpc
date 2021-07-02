@@ -2,9 +2,15 @@
 
 A typesafe RPC framework with compile-time error checking.
 
+🤔 Why is this useful?
+
+You can think of `magic-rpc` as a way to write APIs _quickly_ and [typed]
+_safely_. It avoids the clunkiness of REST and the boilerplate/complexity of
+GraphQL.
+
 <details>
 
-<summary>🤔 Why is this useful?</summary>
+<summary>👩🏼‍🏫 I want more boring details!</summary>
 
 **Motivation:**
 
@@ -31,15 +37,39 @@ This project is loosely based on
 
 </details>
 
-## Intro
+## Install
 
-### 🪄**Magical type inference** RPC Client that can propagate errors, data typ over
+```bash
+npm i magic-rpc
+```
 
-a network boundary
+## Features
 
-### 👩🏼‍💻**Great Developer Experience**:
+### 🪄 **Magical type inference**
 
-### 🔍 See stack traces from server code in development
+Invoke methods in your client code with type guarantees but **without strange
+`import` paths**.
+
+### ⚡️ **Fast Developer Experience**
+
+No code generation is required, speeding up your iteration!
+
+### 😌 **Minimal boilerplate**
+
+Intuitive syntax without complexity. Looks just like methods invocations.
+
+### 😓 **No run-time bloat**
+
+Compiled output requires no runtime code. Tiny library footprint.
+
+### 🔍 **Observability**
+
+See stack traces from server code in development
+
+### 🚧 Easy to try in an existing project
+
+Can be easily deployed into an brownfield project for a small part of your app.
+Zero dependencies, and will work with front-end framework.
 
 ## Usage
 
