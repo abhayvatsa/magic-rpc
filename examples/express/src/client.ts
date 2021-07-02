@@ -1,7 +1,7 @@
 // client.ts
 import fetch from 'cross-fetch';
 import { createClient } from 'magic-rpc';
-import { Services } from './server';
+import type { Services } from './server';
 
 export async function main() {
   // Create an RPC Client
