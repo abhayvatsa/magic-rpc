@@ -81,7 +81,7 @@ No code generation is required, speeding up your iteration!
 
 ### 😌 **Minimal boilerplate**
 
-Intuitive syntax without complexity. Looks just like methods invocations.
+Intuitive syntax without complexity. Looks just like method invocations.
 
 ### 😓 **No run-time bloat**
 
