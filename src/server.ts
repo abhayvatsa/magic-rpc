@@ -1,4 +1,4 @@
-import { Ok, Err, OkImpl, ErrImpl } from './result';
+import { Err, OkImpl, ErrImpl } from './result';
 import { Server as ServerBase } from 'http';
 import { Request, Response } from './types';
 import invariant from 'tiny-invariant';
@@ -22,13 +22,7 @@ export { Server };
 
 async function getResult(action: <T = unknown, R = unknown>(args?: T) => R) {
   try {
-    const result = await Promise.resolve(stacktrace.barrier(action));
-
-    if (result instanceof OkImpl || result instanceof ErrImpl) {
-      return result;
-    }
-
-    return Ok(result);
+    return await Promise.resolve(stacktrace.barrier(action));
   } catch (error) {
     const stack = stacktrace.get(error);
     console.error(`unhandled exception in method: ${error} ${stack}`);
@@ -78,17 +72,21 @@ export const createRpcHandler = function (services: Services) {
     );
 
     const result = await getResult(method.bind(null, ...args));
+    const response = {
+      id: req.body.id,
+    } as Record<string, unknown>;
 
-    if (process.env.NODE_ENV === 'production') {
-      (result as any)._stack = '';
+    // Enable client to differentiate Result from non-result
+    if (result instanceof OkImpl || result instanceof ErrImpl) {
+      response.result = result;
+      if (process.env.NODE_ENV === 'production') {
+        (result as any)._stack = '';
+      }
+    } else {
+      response.val = result;
     }
 
-    res.end(
-      JSON.stringify({
-        id: req.body.id,
-        result,
-      })
-    );
+    res.json(response);
   }
 
   return async (req: Request, res: Response) => {

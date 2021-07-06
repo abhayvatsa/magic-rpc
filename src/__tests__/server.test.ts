@@ -38,6 +38,7 @@ describe('server error handling', () => {
       // This is usually a private method to the server
       const result = await fs._superSecretMethod();
 
+      // @ts-expect-error This method can't be called
       expect(result.err).toEqual(true);
     })
   );

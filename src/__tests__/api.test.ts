@@ -4,10 +4,9 @@ describe('Test a range of return values', () => {
   it.concurrent(
     'Synchronous method returning non-result works',
     wrapInClient(async ({ greeting }) => {
-      const result = await greeting.hello('world');
+      const response = await greeting.hello('world');
 
-      expect(result.ok).toEqual(true);
-      expect(result.val).toEqual('Hello world!');
+      expect(response).toEqual('Hello world!');
     })
   );
 
@@ -75,7 +74,7 @@ describe('Method error cases', () => {
       // @ts-expect-error Purposely calling with incorrect # of arguments
       const result = await greeting.hello();
 
-      expect(result.ok).toEqual(false);
+      // @ts-expect-error Purposely calling with incorrect # of arguments
       expect(result.val).toEqual(
         'Invariant failed: Expected 1 arguments, received 0'
       );

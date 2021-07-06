@@ -5,12 +5,12 @@ import express from 'express';
 // Define some services
 const services = {
   greeting: {
-    square(_: Request: name: string) {
+    square(_: Request, name: string) {
       return `Hello ${name} from rpc server`;
     },
   },
   math: {
-    square(_: Request: x: number) {
+    square(_: Request, x: number) {
       return x * x;
     },
     divide(_: Request, x: number, y: number) {

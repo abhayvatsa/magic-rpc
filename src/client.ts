@@ -1,13 +1,8 @@
-import { Ok, Err, Result, ResultOkType, ResultErrType } from './result';
+import { Ok, Err } from './result';
 import invariant from 'tiny-invariant';
 import { Request } from './server';
 
 export type Fetch = typeof window.fetch;
-
-type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
-type UnwrapResultOk<T> = T extends Result<unknown, unknown>
-  ? ResultOkType<T>
-  : T;
 
 // NOTE: Don't include `Request` for client-side parameters
 declare type ExcludeRequest<T> = T extends [_: Request, ...args: infer A]
@@ -16,14 +11,7 @@ declare type ExcludeRequest<T> = T extends [_: Request, ...args: infer A]
 
 type ClientService<T> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer P
-    ? (
-        ...args: ExcludeRequest<A>
-      ) => Promise<
-        Result<
-          UnwrapResultOk<UnwrapPromise<P>>,
-          ResultErrType<UnwrapPromise<P>>
-        >
-      >
+    ? (...args: ExcludeRequest<A>) => Promise<P>
     : never;
 };
 
@@ -76,15 +64,17 @@ export function createClient<T>(
 
                     invariant(json.id === id, 'invalid response id');
 
-                    const {
-                      result: { err, val, _stack },
-                    } = json;
+                    const { result, val } = json;
 
-                    if (err) {
-                      return Err(val, _stack);
+                    if (val) {
+                      return val;
                     }
 
-                    return Ok(val);
+                    if (result.err) {
+                      return Err(result.val, result._stack);
+                    }
+
+                    return Ok(result.val);
                   } catch (err) {
                     return Err(Error('Unexpected request error!'));
                   }
