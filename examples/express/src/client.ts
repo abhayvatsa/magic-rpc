@@ -8,7 +8,7 @@ export async function main() {
   const { math } = createClient<Services>(`http://localhost:8080/rpc`, fetch);
 
   // Invoke method on RPC client
-  const result = await math.divide(10, 2);
+  const response = await math.square(10);
 
-  console.log(result.val);
+  console.log(response);
 }

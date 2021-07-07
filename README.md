@@ -2,7 +2,7 @@
 
 A typesafe RPC framework with compile-time error checking.
 
-![intellisense-works-great](https://user-images.githubusercontent.com/15083292/124224599-d2c79700-daba-11eb-8e79-b35dbce50ef8.mp4)
+https://user-images.githubusercontent.com/15083292/124224599-d2c79700-daba-11eb-8e79-b35dbce50ef8.mp4
 
 🤔 Why is this useful?
 
@@ -136,7 +136,7 @@ Finally, this is what configuring your server looks like.
 
 ```typescript
 // server.ts
-import { createRpcHandler, Ok, Err } from 'magic-rpc';
+import { createRpcHandler, Ok, Err, Result } from 'magic-rpc';
 import express from 'express';
 
 // These are methods the server will expose
