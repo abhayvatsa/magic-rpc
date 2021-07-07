@@ -2,7 +2,7 @@
 
 A typesafe RPC framework with compile-time error checking.
 
-https://user-images.githubusercontent.com/15083292/124224599-d2c79700-daba-11eb-8e79-b35dbce50ef8.mp4
+![Magic RPC intellisense demo](https://user-images.githubusercontent.com/15083292/124224599-d2c79700-daba-11eb-8e79-b35dbce50ef8.mp4)
 
 🤔 Why is this useful?
 
@@ -70,65 +70,53 @@ narrowing only work when `strictNullChecks` is turned on.
 
 ## Features
 
-### 🪄 **Magical type inference**
+### 🪄 Magical type inference
 
 Invoke methods in your client code with type guarantees but **without strange
 `import` paths**.
 
-### ⚡️ **Fast Developer Experience**
+### ⚡️ Fast Developer Experience
 
-No code generation is required, speeding up your iteration!
+No code generation is required, speeding up your iteration! Minimal boilerplate
+and intuitive syntax. Looks just like method invocations. Tiny library
+footprint.
 
-### 😌 **Minimal boilerplate**
-
-Intuitive syntax without complexity. Looks just like method invocations.
-
-### 😓 **No run-time bloat**
-
-Compiled output requires no runtime code. Tiny library footprint.
-
-### 🔍 **Observability**
+### 🔍 Observability
 
 See stack traces from server code in development
 
 ### 🚧 Easy to try in an existing project
 
 Can be easily deployed into an brownfield project for a small part of your app.
-Zero dependencies, and designed to play well with all front-end framework.
+Designed to be agnostic to front-end framework choice.
 
 ## Usage
+
+### Simple Example
 
 Invoking an RPC method from your client _looks_ like calling a function defined
 on your server.
 
 ```typescript
-// Note: `divide` is a remote procedure call and goes over a network boundary
-const result = await divide(10, 0);
+const quotient = await math.divide(10, 2);
 ```
-
-Server methods functions have a return type of `Result<T, E>` or
-`Ok<T> | Err<E>`). Below, the return type of `divide` has a return type of
-`Result<number, 'Divided by zero'>` or `Ok<number> | Err<'Divided by zero'>`
 
 Create a client that is aware of the return types of your methods.
 
 ```typescript
 // client.ts
 import { createClient } from 'magic-rpc';
+import fetch from 'cross-fetch';
 import type { Services } from './server';
 
-// Create RPC client
-const { math } = createClient<Services>(`http://localhost:8080/rpc`);
+export async function main() {
+  // Create an RPC Client
+  const { math } = createClient<Services>(`http://localhost:8080/rpc`, fetch);
 
-// Invoke method on RPC client
-const result = await math.divide(10, 0); // result: Result<number, 'Divided by zero'>
+  // Invoke method on RPC client (crosses network boundary)
+  const response = await math.divide(10, 2); // TS is aware of types
 
-// TS now forces you to check whether you have a valid result at compile time.
-if (result.ok) {
-  const quotient = result.val; //  type narrowing guarantees `quotient` is a `number`
-  console.log(`Success: ${quotient}`);
-} else {
-  const err = result.val;
+  console.log(response);
 }
 ```
 
@@ -136,35 +124,25 @@ Finally, this is what configuring your server looks like.
 
 ```typescript
 // server.ts
-import { createRpcHandler, Ok, Err, Result } from 'magic-rpc';
+import { createRpcHandler, Request } from 'magic-rpc';
 import express from 'express';
 
-// These are methods the server will expose
+// Define some services
 const services = {
   math: {
-    divide(
-      _req,
-      x: number,
-      y: number
-    )> : Result<number, 'Divided by zero'>{
-      if (y === 0) {
-        return Err('Divided by zero')
-      } else {
-        return Ok(x / y)
-      }
+    divide(_: Request, x: number, y: number) {
+      return x / y;
     },
-  }
-}
+  },
+};
 
-export type Services = typeof services
+// Client will import these for the RpcClient
+export type Services = typeof services;
 
-// Configure express server
-const app = express();
+// Configure server
+export const app = express();
 app.use(express.json());
 app.post('/rpc', createRpcHandler(services));
-
-// Start server
-app.listen(8080);
 ```
 
 <details>

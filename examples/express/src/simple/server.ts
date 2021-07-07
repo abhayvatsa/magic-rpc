@@ -19,6 +19,7 @@ const services = {
   },
 };
 
+// Client will import these for the RpcClient
 export type Services = typeof services;
 
 // Configure server
