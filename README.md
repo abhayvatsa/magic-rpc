@@ -22,20 +22,20 @@ requires some tooling to achieve.
 
 To this end, we can use an RPC client that is aware of the return type of the
 server response. We will encode the _data type_ and _error type_ into the return
-type of an RPC method. The client will _infer_ the return type from the RPC
+type of an RPC method. The client will _infer_ the type of the RPC
 method enabling the compiler to know about data and error types. The compiler
 will enforce appropriate error handling on the client: providing us
 strongly-typed client-server code.
-
-Our error propagation is inspired by
-[Rust's Result type](https://doc.rust-lang.org/std/result/), which returns a
-tuple of `Result<T, E>` from a function. Here `T` is your data type and `E` is
-your error type.
 
 **Inspiration:**
 
 This project is loosely based on
 [JSON RPC](https://www.jsonrpc.org/specification).
+
+Our error propagation is inspired by
+[Rust's Result type](https://doc.rust-lang.org/std/result/), which returns a
+tuple of `Result<T, E>` from a function. Here `T` is your data type and `E` is
+your error type.
 
 </details>
 
@@ -87,7 +87,7 @@ See stack traces from server code in development
 
 ### 🚧 Easy to try in an existing project
 
-Can be easily deployed into an brownfield project for a small part of your app.
+Can be gradually deployed into your project.
 Designed to be agnostic to front-end framework choice.
 
 ## Usage
