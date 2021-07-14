@@ -1,7 +1,6 @@
 import { Ok, Err } from './result';
 import invariant from 'tiny-invariant';
 import { Request } from './server';
-
 export type Fetch = typeof window.fetch;
 
 // NOTE: Don't include `Request` for client-side parameters
@@ -15,8 +14,18 @@ type ClientService<T> = {
     : never;
 };
 
+interface Module {
+  default: any;
+}
+
+type ResolveDynamicImport<T> = T extends (...args: infer _) => Promise<infer P>
+  ? P extends Module
+    ? P['default']
+    : T
+  : T;
+
 export type Client<T> = {
-  [K in keyof T]: ClientService<T[K]>;
+  [K in keyof T]: ClientService<ResolveDynamicImport<T[K]>>;
 };
 
 /**

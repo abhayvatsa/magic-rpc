@@ -15,7 +15,7 @@ export type Methods = {
   [method: string]: Method;
 };
 export type Services = {
-  [service: string]: Methods;
+  [service: string]: Methods | (() => Promise<{ default: Methods }>);
 };
 
 export { Server };
@@ -50,7 +50,10 @@ export const createRpcHandler = function (services: Services) {
       `Cannot call methods prefixed with '_': '${req.body.method}'`
     );
 
-    const service = services[req.body.service];
+    const module = services[req.body.service];
+    const service =
+      typeof module === 'function' ? (await module()).default : module;
+
     invariant(service, `Service '${req.body.service}' does not exist`);
 
     invariant(
