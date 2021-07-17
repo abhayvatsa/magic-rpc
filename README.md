@@ -1,8 +1,9 @@
+
 # magic-rpc [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/abhayvatsa/magic-rpc/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/magic-rpc.svg?style=flat)](https://www.npmjs.com/package/magic-rpc)
 
 A typesafe RPC framework with compile-time error checking.
 
-![Magic RPC intellisense demo](https://user-images.githubusercontent.com/15083292/124224599-d2c79700-daba-11eb-8e79-b35dbce50ef8.mp4)
+![![magic-rpc-demo](https://user-images.githubusercontent.com/15083292/126031170-0f884932-52f8-4484-86be-2db1b9b3fa61.gif)](https://user-images.githubusercontent.com/15083292/124224599-d2c79700-daba-11eb-8e79-b35dbce50ef8.mp4)
 
 🤔 Why is this useful?
 
