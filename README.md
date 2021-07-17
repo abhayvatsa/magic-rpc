@@ -3,7 +3,7 @@
 
 A typesafe RPC framework with compile-time error checking.
 
-![![magic-rpc-demo](https://user-images.githubusercontent.com/15083292/126031170-0f884932-52f8-4484-86be-2db1b9b3fa61.gif)](https://user-images.githubusercontent.com/15083292/124224599-d2c79700-daba-11eb-8e79-b35dbce50ef8.mp4)
+![magic-rpc intellisense demo](https://user-images.githubusercontent.com/15083292/126031479-4bd6f493-3207-4e7b-a63d-dc4fa0e7a2bb.gif)
 
 🤔 Why is this useful?
 
