@@ -1,4 +1,3 @@
-
 # magic-rpc [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/abhayvatsa/magic-rpc/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/magic-rpc.svg?style=flat)](https://www.npmjs.com/package/magic-rpc)
 
 A typesafe RPC framework with compile-time error checking.
@@ -23,10 +22,10 @@ requires some tooling to achieve.
 
 To this end, we can use an RPC client that is aware of the return type of the
 server response. We will encode the _data type_ and _error type_ into the return
-type of an RPC method. The client will _infer_ the type of the RPC
-method enabling the compiler to know about data and error types. The compiler
-will enforce appropriate error handling on the client: providing us
-strongly-typed client-server code.
+type of an RPC method. The client will _infer_ the type of the RPC method
+enabling the compiler to know about data and error types. The compiler will
+enforce appropriate error handling on the client: providing us strongly-typed
+client-server code.
 
 **Inspiration:**
 
@@ -88,8 +87,8 @@ See stack traces from server code in development
 
 ### 🚧 Easy to try in an existing project
 
-Can be gradually deployed into your project.
-Designed to be agnostic to front-end framework choice.
+Can be gradually deployed into your project. Designed to be agnostic to
+front-end framework choice.
 
 ## Usage
 
@@ -168,8 +167,9 @@ $ curl localhost:8080/rpc \
 
 ## Alternatives
 
-- [loopback-next](https://github.com/strongloop/loopback-next)
+- [obvious-rpc](https://github.com/antimatter15/obvious-rpc)
 - [trpc](https://github.com/vriad/trpc)
+- [loopback-next](https://github.com/strongloop/loopback-next)
 - [jsonrpc-ts](https://github.com/shekohex/jsonrpc-ts)
 - [rpc_ts](https://github.com/aiden/rpc_ts)
 - [ts-alias](https://github.com/coffeemug/ts-alias)
