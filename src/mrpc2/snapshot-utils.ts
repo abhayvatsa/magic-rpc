@@ -1,4 +1,4 @@
-export const jsSnapshot = `
+export const jsonSchemaSnapshot = `
 "{
     \\"$schema\\": \\"http://json-schema.org/draft-06/schema#\\",
     \\"definitions\\": {
@@ -59,7 +59,7 @@ export const jsSnapshot = `
 }
 "
 `;
-export const javaSnapshot = `
+export const javaSchemaSnapshot = `
 "// Converter.java
 
 // To use this code, add the following Maven dependency to your project:
