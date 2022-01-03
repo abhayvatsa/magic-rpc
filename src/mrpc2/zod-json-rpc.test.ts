@@ -3,6 +3,7 @@ import { withTestServer } from './server-test-utils';
 import { createZodJsonRpcServer } from './server';
 import { createZodJsonRpcClient } from './client';
 import { Router } from 'express';
+import { snapshot } from './snapshot-utils';
 
 test('it works', async () => {
   const { default: methods } = await import('./example-server');
@@ -18,73 +19,13 @@ test('it works', async () => {
     const schema = await (
       await fetch(`http://localhost:${port}/rpc/schema`)
     ).text();
-    expect(schema).toMatchInlineSnapshot(`
-"{
-    \\"$schema\\": \\"http://json-schema.org/draft-06/schema#\\",
-    \\"definitions\\": {
-        \\"HelloArg\\": {
-            \\"type\\": \\"object\\",
-            \\"additionalProperties\\": false,
-            \\"properties\\": {
-                \\"name\\": {
-                    \\"type\\": \\"string\\"
-                }
-            },
-            \\"required\\": [
-                \\"name\\"
-            ],
-            \\"title\\": \\"HelloArg\\"
-        },
-        \\"HelloRet\\": {
-            \\"type\\": \\"object\\",
-            \\"additionalProperties\\": false,
-            \\"properties\\": {
-                \\"message\\": {
-                    \\"type\\": \\"string\\"
-                }
-            },
-            \\"required\\": [
-                \\"message\\"
-            ],
-            \\"title\\": \\"HelloRet\\"
-        },
-        \\"ServerGetSchemaArg\\": {
-            \\"type\\": \\"object\\",
-            \\"additionalProperties\\": false,
-            \\"properties\\": {
-                \\"lang\\": {
-                    \\"type\\": \\"string\\"
-                },
-                \\"pattern\\": {
-                    \\"type\\": \\"string\\"
-                }
-            },
-            \\"required\\": [],
-            \\"title\\": \\"ServerGetSchemaArg\\"
-        },
-        \\"ServerGetSchemaRet\\": {
-            \\"type\\": \\"object\\",
-            \\"additionalProperties\\": false,
-            \\"properties\\": {
-                \\"source\\": {
-                    \\"type\\": \\"string\\"
-                }
-            },
-            \\"required\\": [
-                \\"source\\"
-            ],
-            \\"title\\": \\"ServerGetSchemaRet\\"
-        }
-    }
-}
-"
-`);
+
+    expect(schema).toMatchInlineSnapshot(snapshot);
 
     const java = await (
       await fetch(`http://localhost:${port}/rpc/schema?lang=java`)
     ).text();
 
-    return;
     expect(java).toMatchInlineSnapshot(`
 "// Converter.java
 
