@@ -24,8 +24,10 @@ async function getResult(action: <T = unknown, R = unknown>(args?: T) => R) {
   try {
     return await Promise.resolve(stacktrace.barrier(action));
   } catch (error) {
-    const stack = stacktrace.get(error);
-    console.error(`unhandled exception in method: ${error} ${stack}`);
+    if (error instanceof Error) {
+      const stack = stacktrace.get(error);
+      console.error(`unhandled exception in method: ${error} ${stack}`);
+    }
 
     return Err('interval server error');
   }
@@ -96,10 +98,11 @@ export const createRpcHandler = function (services: Services) {
     try {
       await handleRequest(req, res);
     } catch (e) {
-      res.json({
-        id: req.body.id,
-        result: Err(e.message),
-      });
+      e instanceof Error &&
+        res.json({
+          id: req.body.id,
+          result: Err(e.message),
+        });
     }
   };
 };

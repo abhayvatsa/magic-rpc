@@ -9,7 +9,7 @@ export default {
     try {
       return Ok(await promises.readFile(path, 'utf8'));
     } catch (err) {
-      if (err.code === 'ENOENT') {
+      if (err instanceof Object && 'code' in err && err?.code === 'ENOENT') {
         return Err('no such file');
       }
       return Err('could not open file');
